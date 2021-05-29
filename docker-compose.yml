@@ -37,3 +37,9 @@ services:
             context: ./Puertos/Scraper
             dockerfile: dockerfile
         depends_on: mongo
+
+    frontend:
+        container_name: frontend
+        build:
+            context: ./Puertos/Frontend
+            dockerfile: dockerfile
