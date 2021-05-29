@@ -1,0 +1,2 @@
+class editoriales:
+    pass
