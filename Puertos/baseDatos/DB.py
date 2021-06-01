@@ -1,13 +1,19 @@
-from pymongo import MongoClient
-from Core.Clases import libros as libro
+import os, sys
+p = os.path.abspath('.')
+sys.path.insert(1, p)
 
-class MHRecorderGuardador(MHRecorder):
+from pymongo import MongoClient
+from Nucleo.Clases.libros import libros as libro
+from Puertos.Interfaces.BaseDatos.baseDatos import Bibliotecario
+
+
+class BibliotecarioEx(Bibliotecario):
     ### ATENCION AQUI: poner el puerto de tu base de mongo
     mongo_client = MongoClient(host="localhost",port=27017)
     db = mongo_client["project"]
     col = db["libros"]
-
-    def guardarlibro(self, libros: libro):
+    
+    def guardarLibro(self, libros: libro):
         titulo = libros.getTitulo()
         autor = libro.getAutor()
         añoLanzamiento = libro.getAnoLanzamiento()
@@ -32,5 +38,4 @@ class MHRecorderGuardador(MHRecorder):
             return True
         else:
             return False
-
-    
+        
