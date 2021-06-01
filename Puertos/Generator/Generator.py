@@ -1,15 +1,24 @@
+import os, sys
+p = os.path.abspath('.')
+sys.path.insert(1, p)
+
+from Nucleo.Clases.libros import libros
 from faker import Faker
-from Core.Clases import libros
+import random
+
 from pymongo import MongoClient
 
+
+"""
+Atributos de libros:
+    - titulo
+    - autor
+    - anoLanzamiento
+    - categoria
+    - editorial
+    - idioma
+    - numPaginas
+    - descripcion
+"""
+
 cliente = MongoClient()
-
-def Generar1(self):
-    return libros
-    pass
-
-def generarMuchos(self):
-    """Cambiar de acuerdo a la cantidad de libros a generar"""
-    total = 1000
-    for i in range(1,total):
-        pass
