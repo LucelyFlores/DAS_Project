@@ -13,8 +13,8 @@ class libros:
         return self.titulo
     def getAutor(self):
         return self.autor
-    def getAñoLanzamiento(self):
-        return self.añoLanzamiento
+    def getAnoLanzamiento(self):
+        return self.anoLanzamiento
     def getCategoria(self):
         return self.categoria
     def getEditorial(self):
@@ -26,7 +26,7 @@ class libros:
     def getDescripcion(self):
         return self.descripcion
             
-    def __str__(self) -> str:
+    def __str__(self):
         self.cadena = "Título:\n\t{}\n".format(self.titulo)
         self.cadena += "Autor:\n\t{}\n".format(self.autor)
         self.cadena += "Año de lanzamiento:\n\t{}\n".format(self.anoLanzamiento)

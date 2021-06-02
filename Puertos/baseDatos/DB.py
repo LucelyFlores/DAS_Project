@@ -4,7 +4,7 @@ sys.path.insert(1, p)
 
 from pymongo import MongoClient
 from Nucleo.Clases.libros import libros
-from Puertos.Interfaces.interfacedb import Bibliotecario
+from Interfaces.interfacedb import Bibliotecario
 
 
 class BibliotecarioEx(Bibliotecario):
@@ -13,15 +13,15 @@ class BibliotecarioEx(Bibliotecario):
     db = mongo_client["project"]
     col = db["libros"]
     
-    def guardarLibro(self, libros: libros):
-        titulo = libros.getTitulo()
-        autor = libros.getAutor()
-        añoLanzamiento = libros.getAnoLanzamiento()
-        categoria = libros.getCategoria()
-        editorial = libros.getEditorial()
-        idioma = libros.getIdioma()
-        numPaginas = libros.getNumPaginas()
-        descripcion = libros.getDescripcion()
+    def guardarLibro(self, libro: libros):
+        titulo = libro.getTitulo()
+        autor = libro.getAutor()
+        añoLanzamiento = libro.getAnoLanzamiento()
+        categoria = libro.getCategoria()
+        editorial = libro.getEditorial()
+        idioma = libro.getIdioma()
+        numPaginas = libro.getNumPaginas()
+        descripcion = libro.getDescripcion()
         dicc = {
             "Titulo" : titulo,
             "Autor" : autor,
