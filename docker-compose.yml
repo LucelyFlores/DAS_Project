@@ -10,15 +10,13 @@ services:
             - MONGO_INITDB_ROOT_PASSWORD=root
             - MONGO_INITDB_DATABASE=project
         ports: 
-            - 27018:27017
-        volumes: 
-            - ./database
+            - "27017:27017"
 
     mongo-express:
         container_name: mongodbms
         image: mongo-express
         environment:
-            - ME_CONFIG_MONGODB_SERVER=mongo
+            - ME_CONFIG_MONGODB_SERVER=localhost
             - ME_CONFIG_MONGODB_PORT=27017
             - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
             - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
@@ -31,15 +29,11 @@ services:
         ports:
           - "8888:8081"
 
-    scraper:
-        container_name: scraper
+    generator:
+        container_name: generator
         build: 
-            context: ./Puertos/Scraper
-            dockerfile: dockerfile
-        depends_on: mongo
-
-    frontend:
-        container_name: frontend
-        build:
-            context: ./Puertos/Frontend
-            dockerfile: dockerfile
+            context: .
+            dockerfile: dockerfile.generator
+        depends_on:
+            - mongo
+            - mongo-express
