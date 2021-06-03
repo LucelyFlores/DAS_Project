@@ -3,9 +3,8 @@ p = os.path.abspath('.')
 sys.path.insert(1, p)
 
 from pymongo import MongoClient
-from Nucleo.Clases.libros import libros
-from Interfaces.interfacedb import Bibliotecario
-
+from Nucleo.Clases.libros import libros as libro
+from Puertos.Interfaces.BaseDatos.baseDatos import Bibliotecario
 
 class BibliotecarioEx(Bibliotecario):
     ### ATENCION AQUI: poner el puerto de tu base de mongo
@@ -14,11 +13,11 @@ class BibliotecarioEx(Bibliotecario):
 
     db = mongo_client["project"]
     col = db["libros"]
-    
-    def guardarLibro(self, libro: libros):
-        titulo = libro.getTitulo()
+
+    def guardarlibro(self, libros: libro):
+        titulo = libros.getTitulo()
         autor = libro.getAutor()
-        añoLanzamiento = libro.getAnoLanzamiento()
+        anoLanzamiento = libro.getAnoLanzamiento()
         categoria = libro.getCategoria()
         editorial = libro.getEditorial()
         idioma = libro.getIdioma()
@@ -27,7 +26,7 @@ class BibliotecarioEx(Bibliotecario):
         dicc = {
             "Titulo" : titulo,
             "Autor" : autor,
-            "Año Lanzamiento" : añoLanzamiento,
+            "Año Lanzamiento" : anoLanzamiento,
             "Categoria" : categoria,
             "Editorial" : editorial,
             "Idioma" : idioma,
@@ -36,10 +35,120 @@ class BibliotecarioEx(Bibliotecario):
         }
 
         self.col.insert_one(dicc)
-
-    def checkIfExist(self, libro: libros):
         if self.col.count_documents({"Titulo":libro.getTitulo()}, limit = 1) != 0:
             return True
         else:
             return False
+
+    def guardarMuchosLibros(self, listaLibros:list):
+        guardado=[]
+        for i in listaLibros:
+            titulo = libro.getTitulo(i)
+            autor = libro.getAutor(i)
+            anoLanzamiento = libro.getAnoLanzamiento(i)
+            categoria = libro.getCategoria(i)
+            editorial = libro.getEditorial(i)
+            idioma = libro.getIdioma(i)
+            numPaginas = libro.getNumPaginas(i)
+            descripcion = libro.getDescripcion(i)
+            dicc = {
+                "Titulo" : titulo,
+                "Autor" : autor,
+                "Año Lanzamiento" : anoLanzamiento,
+                "Categoria" : categoria,
+                "Editorial" : editorial,
+                "Idioma" : idioma,
+                "Nummero de Paginas" : numPaginas,
+                "Descripcion" : descripcion
+            }
+            guardado.append(dicc)
         
+        self.col.insert_many(guardado)
+        if self.col.count_documents({"Titulo":libro.getTitulo()}, limit = 1) != 0:
+            return True
+        else:
+            return False
+
+    def libroPorTitulo(self, titulo: str):
+        busquedalibro = self.col.find_one({"Titulo":titulo})
+        titulo = busquedalibro["Titulo"]
+        autor = busquedalibro["Autor"]
+        anoLanzamiento = busquedalibro["Año Lanzamiento"]
+        categoria = busquedalibro["Categoria"]
+        editorial = busquedalibro["Editorial"]
+        idioma = busquedalibro["Idioma"]
+        numPaginas = busquedalibro["Nummero de Paginas"]
+        descripcion = busquedalibro["Descripcion"]
+        buscarnombre = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+        
+        return buscarnombre
+    
+    def librosPorAutor(self, autor: str):
+        busquedaautores=[]
+        busquedadb = self.col.find({"Autor":autor})
+
+        for i in busquedadb:
+            titulo = i["Titulo"]
+            autor = i["Autor"]
+            anoLanzamiento = i["Año Lanzamiento"]
+            categoria = i["Categoria"]
+            editorial = i["Editorial"]
+            idioma = i["Idioma"]
+            numPaginas = i["Nummero de Paginas"]
+            descripcion = i["Descripcion"]
+            autores = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            busquedaautores.append(autores)
+        return busquedaautores
+    
+    def librosPorAno(self, ano: int):
+        busquedalanza=[]
+        busquedadb = self.col.find({"Año Lanzamiento":ano})
+
+        for i in busquedadb:
+            titulo = i["Titulo"]
+            autor = i["Autor"]
+            anoLanzamiento = i["Año Lanzamiento"]
+            categoria = i["Categoria"]
+            editorial = i["Editorial"]
+            idioma = i["Idioma"]
+            numPaginas = i["Nummero de Paginas"]
+            descripcion = i["Descripcion"]
+            alanzamiento = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            busquedalanza.append(alanzamiento)
+        return busquedalanza
+    
+    def librosPorEditorial(self, editorial: str):
+        busquedaedit=[]
+        busquedadb = self.col.find({"Editorial":editorial})
+
+        for i in busquedadb:
+            titulo = i["Titulo"]
+            autor = i["Autor"]
+            anoLanzamiento = i["Año Lanzamiento"]
+            categoria = i["Categoria"]
+            editorial = i["Editorial"]
+            idioma = i["Idioma"]
+            numPaginas = i["Nummero de Paginas"]
+            descripcion = i["Descripcion"]
+            editoriales = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            busquedaedit.append(editoriales)
+        return busquedaedit
+
+
+
+    def librosPorIdioma(self, idioma: str):
+        busquedaidioma=[]
+        busquedadb = self.col.find({"Editorial":idioma})
+
+        for i in busquedadb:
+            titulo = i["Titulo"]
+            autor = i["Autor"]
+            anoLanzamiento = i["Año Lanzamiento"]
+            categoria = i["Categoria"]
+            editorial = i["Editorial"]
+            idioma = i["Idioma"]
+            numPaginas = i["Nummero de Paginas"]
+            descripcion = i["Descripcion"]
+            idiomas = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            busquedaidioma.append(idiomas)
+        return busquedaidioma
