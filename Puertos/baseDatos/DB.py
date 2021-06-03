@@ -3,7 +3,7 @@ p = os.path.abspath('.')
 sys.path.insert(1, p)
 
 from pymongo import MongoClient
-from Nucleo.Clases.libros import libros as libro
+from Nucleo.Clases.libros import libros
 from Interfaces.interfacedb import Bibliotecario
 
 class BibliotecarioEx(Bibliotecario):
@@ -14,15 +14,15 @@ class BibliotecarioEx(Bibliotecario):
     db = mongo_client["project"]
     col = db["libros"]
 
-    def guardarlibro(self, libros: libro):
+    def guardarLibro(self, libros: libros):
         titulo = libros.getTitulo()
-        autor = libro.getAutor()
-        anoLanzamiento = libro.getAnoLanzamiento()
-        categoria = libro.getCategoria()
-        editorial = libro.getEditorial()
-        idioma = libro.getIdioma()
-        numPaginas = libro.getNumPaginas()
-        descripcion = libro.getDescripcion()
+        autor = libros.getAutor()
+        anoLanzamiento = libros.getAnoLanzamiento()
+        categoria = libros.getCategoria()
+        editorial = libros.getEditorial()
+        idioma = libros.getIdioma()
+        numPaginas = libros.getNumPaginas()
+        descripcion = libros.getDescripcion()
         dicc = {
             "Titulo" : titulo,
             "Autor" : autor,
@@ -35,22 +35,22 @@ class BibliotecarioEx(Bibliotecario):
         }
 
         self.col.insert_one(dicc)
-        if self.col.count_documents({"Titulo":libro.getTitulo()}, limit = 1) != 0:
+        if self.col.count_documents({"Titulo":libros.getTitulo()}, limit = 1) != 0:
             return True
         else:
             return False
 
     def guardarMuchosLibros(self, listaLibros:list):
         guardado=[]
-        for i in listaLibros:
-            titulo = libro.getTitulo(i)
-            autor = libro.getAutor(i)
-            anoLanzamiento = libro.getAnoLanzamiento(i)
-            categoria = libro.getCategoria(i)
-            editorial = libro.getEditorial(i)
-            idioma = libro.getIdioma(i)
-            numPaginas = libro.getNumPaginas(i)
-            descripcion = libro.getDescripcion(i)
+        for i in range(0,len(listaLibros)):
+            titulo = listaLibros[i].getTitulo()
+            autor = listaLibros[i].getAutor()
+            anoLanzamiento = listaLibros[i].getAnoLanzamiento()
+            categoria = listaLibros[i].getCategoria()
+            editorial = listaLibros[i].getEditorial()
+            idioma = listaLibros[i].getIdioma()
+            numPaginas = listaLibros[i].getNumPaginas()
+            descripcion = listaLibros[i].getDescripcion()
             dicc = {
                 "Titulo" : titulo,
                 "Autor" : autor,
@@ -64,10 +64,6 @@ class BibliotecarioEx(Bibliotecario):
             guardado.append(dicc)
         
         self.col.insert_many(guardado)
-        if self.col.count_documents({"Titulo":libro.getTitulo()}, limit = 1) != 0:
-            return True
-        else:
-            return False
 
     def libroPorTitulo(self, titulo: str):
         busquedalibro = self.col.find_one({"Titulo":titulo})
@@ -79,7 +75,7 @@ class BibliotecarioEx(Bibliotecario):
         idioma = busquedalibro["Idioma"]
         numPaginas = busquedalibro["Nummero de Paginas"]
         descripcion = busquedalibro["Descripcion"]
-        buscarnombre = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+        buscarnombre = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
         
         return buscarnombre
     
@@ -96,7 +92,7 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            autores = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            autores = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedaautores.append(autores)
         return busquedaautores
     
@@ -113,7 +109,7 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            alanzamiento = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            alanzamiento = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedalanza.append(alanzamiento)
         return busquedalanza
     
@@ -130,7 +126,7 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            editoriales = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            editoriales = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedaedit.append(editoriales)
         return busquedaedit
 
@@ -149,6 +145,6 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            idiomas = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            idiomas = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedaidioma.append(idiomas)
         return busquedaidioma
