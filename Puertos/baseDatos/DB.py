@@ -4,7 +4,7 @@ sys.path.insert(1, p)
 
 from pymongo import MongoClient
 from Nucleo.Clases.libros import libros as libro
-from Puertos.Interfaces.BaseDatos.baseDatos import Bibliotecario
+from Interfaces.interfacedb import Bibliotecario
 
 class BibliotecarioEx(Bibliotecario):
     ### ATENCION AQUI: poner el puerto de tu base de mongo
@@ -79,7 +79,7 @@ class BibliotecarioEx(Bibliotecario):
         idioma = busquedalibro["Idioma"]
         numPaginas = busquedalibro["Nummero de Paginas"]
         descripcion = busquedalibro["Descripcion"]
-        buscarnombre = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+        buscarnombre = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
         
         return buscarnombre
     
@@ -96,7 +96,7 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            autores = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            autores = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedaautores.append(autores)
         return busquedaautores
     
@@ -113,7 +113,7 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            alanzamiento = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            alanzamiento = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedalanza.append(alanzamiento)
         return busquedalanza
     
@@ -130,7 +130,7 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            editoriales = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            editoriales = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedaedit.append(editoriales)
         return busquedaedit
 
@@ -149,6 +149,6 @@ class BibliotecarioEx(Bibliotecario):
             idioma = i["Idioma"]
             numPaginas = i["Nummero de Paginas"]
             descripcion = i["Descripcion"]
-            idiomas = libros(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
+            idiomas = libro(titulo,autor,anoLanzamiento,categoria,editorial,idioma,numPaginas,descripcion)
             busquedaidioma.append(idiomas)
         return busquedaidioma
