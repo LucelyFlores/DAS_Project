@@ -9,8 +9,6 @@ from Puertos.baseDatos.DB import BibliotecarioEx
 Aqui se podra modificar cuantos libros se buscan generar
 Usar generarUno cuando se trate de pruebas
 """
-while(True):
-    uno = GeneradorEx().generarUno()
-    print(uno)
-    guardar = BibliotecarioEx().guardarLibro(uno)
-#muchos = generar.generarMuchos(100)
+
+muchos = GeneradorEx().generarMuchos(100)
+guardar = BibliotecarioEx().guardarMuchosLibros(muchos)

@@ -11,12 +11,6 @@ class Bibliotecario(ABC):
     @abstractmethod
     def guardarLibro(self, libro:libros):
         pass
-    #listo
-    @abstractmethod
-    def checkIfExist(self, libro:libros) -> bool:
-        pass
-"""
-    #Pendientes
     @abstractmethod
     def guardarMuchosLibros(self, listaLibros:list):
         pass
@@ -36,4 +30,3 @@ class Bibliotecario(ABC):
     def librosPorEditorial(self,editorial:str) -> list:
         pass
     pass
-"""
