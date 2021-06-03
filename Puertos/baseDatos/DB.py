@@ -9,7 +9,9 @@ from Interfaces.interfacedb import Bibliotecario
 
 class BibliotecarioEx(Bibliotecario):
     ### ATENCION AQUI: poner el puerto de tu base de mongo
-    mongo_client = MongoClient(host="localhost",port=27017)
+
+    mongo_client = MongoClient('mongodb://root:root@mongo:27017/')
+
     db = mongo_client["project"]
     col = db["libros"]
     
