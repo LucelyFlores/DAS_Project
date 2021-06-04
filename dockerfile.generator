@@ -1,0 +1,12 @@
+FROM python:3.8
+
+WORKDIR /usr/src
+COPY Puertos/Generator /usr/src/Puertos/Generator
+COPY Puertos/baseDatos /usr/src/Puertos/baseDatos
+COPY Nucleo/Clases /usr/src/Nucleo/Clases
+COPY Interfaces /usr/src/Interfaces
+
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r Puertos/Generator/Requiriments.txt
+
+CMD ["python3","Puertos/Generator/Executer.py"]

@@ -1,45 +1,58 @@
 version: '3'
 
 services:
-
+    #Contenedor A
     mongo:
-        container_name: mongodb
-        image: mongo:latest
+        image: mongo
+        container_name: db
+        restart: on-failure:10
+        env_file: .env
         environment:
-            - MONGO_INITDB_ROOT_USERNAME=root
-            - MONGO_INITDB_ROOT_PASSWORD=root
-            - MONGO_INITDB_DATABASE=project
-        ports: 
-            - 27018:27017
-        volumes: 
-            - ./database
-
+          - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+          - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+          - MONGO_INITDB_DATABASE=$MONGO_DB
+        volumes:
+          - dbdata:/data/db
+        networks:
+          - app-network
+    #Contenedor B
     mongo-express:
-        container_name: mongodbms
-        image: mongo-express
-        environment:
-            - ME_CONFIG_MONGODB_SERVER=mongo
-            - ME_CONFIG_MONGODB_PORT=27017
-            - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
-            - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-            - ME_CONFIG_MONGODB_AUTH_USERNAME=root
-            - ME_CONFIG_MONGODB_AUTH_PASSWORD=root
-            - ME_CONFIG_BASICAUTH_USERNAME=DASistemas
-            - ME_CONFIG_BASICAUTH_PASSWORD=Ordinario!
-        depends_on:
-            - mongo
+        image: mongo-express:latest
         ports:
-          - "8888:8081"
-
-    scraper:
-        container_name: scraper
-        build: 
-            context: ./Puertos/Scraper
-            dockerfile: dockerfile
-        depends_on: mongo
-
-    frontend:
-        container_name: frontend
+          - 8081:8081
+        environment:
+          ME_CONFIG_BASICAUTH_USERNAME: renatogroffe
+          ME_CONFIG_BASICAUTH_PASSWORD: MongoExpress2019!
+          ME_CONFIG_MONGODB_PORT: 27017
+          ME_CONFIG_MONGODB_ADMINUSERNAME: $MONGO_USERNAME
+          ME_CONFIG_MONGODB_ADMINPASSWORD: $MONGO_PASSWORD
+        links:
+          - mongo:mongo
+        networks:
+          - app-network
+        depends_on:
+          - mongo
+    #Contenedor C
+    generator:
+        container_name: generator
         build:
-            context: ./Puertos/Frontend
-            dockerfile: dockerfile
+            context: .
+            dockerfile: dockerfile.generator
+        container_name: generator
+        restart: on-failure:10
+        command: sh Puertos/Generator/wait-for.sh localhost:27017
+        command: python3 Puertos/Generator/Executer.py
+        networks: 
+            - app-network
+        depends_on: 
+            - mongo
+        links:
+            - mongo:mongo
+
+
+
+volumes:
+    dbdata:
+networks:
+    app-network:
+        driver: bridge
